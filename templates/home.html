@@ -1,0 +1,31 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+      Hi {{ user.username }}!
+      <br>
+      <p><a href="{% url 'logout' %}">logout</a> | <a href="{% url 'profile' %}">profile</a> </p>
+
+{% else %}
+    You are not logged in. Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'signup' %}">signup</a> to enjoy more features.
+{% endif %}
+
+<br><br>
+
+{% if topic_list  %}
+    {% for topic in topic_list %}
+        <h3><br>{{topic.title}} <br>{{topic.text}}</h3>
+        {% for comment in topic.comment_set.all %}
+        {{comment.id}}: {{comment.text}}
+            <h4>Votes:{{comment.vote}}</h4>
+        {% endfor %}
+        <a href ="{% url 'adviseMeApp:topicview' topic.id %}"> Read details and comment or Vote!</a>
+        <hr>
+    {%  endfor %}
+
+{% endif %}
+
+{% endblock %}

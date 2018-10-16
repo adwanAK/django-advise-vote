@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Topic Detail{% endblock %}
+
+{% block content %}
+
+{% if topic %}
+    <h2>{{topic.title}}</h2>
+    <br>{{topic.text}}
+    <br><br><br>
+    {% for comment in topic.comment_set.all %}
+        {{comment.id}}: {{comment.text}}<br><br>
+        {% if user.is_authenticated %}
+        <form action="{% url 'adviseMeApp:vote' comment.id %}" method="post">
+            {% csrf_token %}
+            <h3>Votes: <input type="submit" value="-" name="vote">
+                ( {{comment.vote}} )
+            <input type="submit" value="+" name="vote"></h3>
+        </form>
+        <br><br>
+        {% endif %}
+    {% endfor %}
+
+{% endif %}
+{% endblock %}
