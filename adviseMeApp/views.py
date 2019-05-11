@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 class Home(generic.ListView):
     template_name = 'home.html'
     model = Topic
-    paginate_by = 5
+    # paginate_by = 7
 
 
 class TopicView(generic.DetailView):
@@ -29,7 +29,16 @@ class TopicCreate(generic.edit.CreateView):
 
         return super().form_valid(form)
 
+# 04 May 2019 added. This is to create add comments page
+class CommentCreate(generic.edit.CreateView):
+    model = Comment
+    fields = ['text']
+    success_url = '/'
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+# End of this block
 
 def vote(request, pk):
     comment = Comment.objects.get(pk=pk)

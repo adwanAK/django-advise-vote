@@ -17,12 +17,17 @@
 
 {% if topic_list  %}
     {% for topic in topic_list %}
-        <h3><br>{{topic.title}} <br>{{topic.text}}</h3>
+        {% if topic.user_id == user.id %}
+            <p><font size="4" color="green">{{topic.title}}<br>{{topic.text}}</font></p>
+        {% else %}
+            <h3><font size="3" color="black">{{topic.title}} <br>{{topic.text}}</font></p>
+        {% endif %}
+
         {% for comment in topic.comment_set.all %}
         {{comment.id}}: {{comment.text}}
             <h4>Votes:{{comment.vote}}</h4>
         {% endfor %}
-        <a href ="{% url 'adviseMeApp:topicview' topic.id %}"> Read details and comment or Vote!</a>
+        <a href ="{% url 'adviseMeApp:topicview' topic.id %}"> Read here details and the comments and Vote!</a>
         <hr>
     {%  endfor %}
 
